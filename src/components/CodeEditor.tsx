@@ -2,17 +2,19 @@
 
 import { defaultValue } from '@/constants/default-editor-value';
 import Editor from '@monaco-editor/react';
-import { useState } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 
-const CodeEditor = ({ selectedLanguage }: { selectedLanguage: string }) => {
-  const [code, setcode] = useState(defaultValue);
-
-  const onChangeHandler = (value: string) => {
-    setcode(value);
-  };
+const CodeEditor = ({
+  selectedLanguage,
+  setcode
+}: {
+  selectedLanguage: string;
+  setcode: Dispatch<SetStateAction<string>>;
+}) => {
+  const onChangeHandler = (value: string) => setcode(value);
 
   return (
-    <div className='h-full w-full'>
+    <div className='h-full w-3/4'>
       <Editor
         onChange={(e) => e && onChangeHandler(e)}
         theme='vs-dark'
