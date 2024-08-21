@@ -46,3 +46,10 @@ export type Status = {
   id: number;
   description: string;
 };
+
+export type Theme = 'light' | 'dark';
+
+export interface ThemeContextType {
+  theme: Theme;
+  setTheme: (theme: Theme) => void;
+}
