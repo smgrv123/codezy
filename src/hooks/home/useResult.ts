@@ -1,8 +1,9 @@
 import { languageOptions } from '@/constants/language-options';
+import { resultType } from '@/utils/types';
 import { Dispatch, SetStateAction } from 'react';
 import useSubmission from '../network/useSubmission';
 
-const useResult = (selectedLanguage: string, code: string, setresult: Dispatch<SetStateAction<string | null>>) => {
+const useResult = (selectedLanguage: string, code: string, setresult: Dispatch<SetStateAction<resultType>>) => {
   const { getSubmissionResult, sendSubmission } = useSubmission();
   const submissionResult = async ({ token }: { token: string }) => {
     const resultResponse = await getSubmissionResult(token);
@@ -13,16 +14,36 @@ const useResult = (selectedLanguage: string, code: string, setresult: Dispatch<S
           submissionResult({ token });
         }, 2000);
       case 3:
-        setresult(atob(resultResponse.stdout!));
+        setresult({
+          resultResponse: atob(resultResponse.stdout!),
+          resultCode: resultResponse.status.id,
+          resultTime: resultResponse.time,
+          resultStatus: resultResponse.status.description
+        });
         break;
       case 5:
-        setresult('Time Limit Exceeded');
+        setresult({
+          resultResponse: 'Time Limit Exceeded',
+          resultCode: resultResponse.status.id,
+          resultTime: resultResponse.time,
+          resultStatus: resultResponse.status.description
+        });
         break;
       case 6:
-        setresult(resultResponse.compileOutput);
+        setresult({
+          resultResponse: resultResponse.compileOutput as string,
+          resultCode: resultResponse.status.id,
+          resultTime: resultResponse.time,
+          resultStatus: resultResponse.status.description
+        });
         break;
       default:
-        setresult(resultResponse.status.description);
+        setresult({
+          resultResponse: resultResponse.compileOutput as string,
+          resultCode: resultResponse.status.id,
+          resultTime: resultResponse.time,
+          resultStatus: resultResponse.status.description
+        });
         break;
     }
   };

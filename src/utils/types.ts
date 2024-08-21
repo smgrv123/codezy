@@ -21,7 +21,7 @@ export type SubmissionResponse = {
   enablePerProcessAndThreadTimeLimit: boolean;
   enablePerProcessAndThreadMemoryLimit: boolean;
   maxFileSize: number;
-  compileOutput: null;
+  compileOutput: string | null;
   exitCode: number;
   exitSignal: null;
   message: string;
@@ -53,3 +53,7 @@ export interface ThemeContextType {
   theme: Theme;
   setTheme: (theme: Theme) => void;
 }
+
+export type resultType =
+  | { resultResponse: string; resultCode: number; resultStatus: string; resultTime: string }
+  | undefined;
